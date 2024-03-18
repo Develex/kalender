@@ -19,9 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.develex.baseapp.DarkTheme
 import com.develex.baseapp.LocalTheme
 import com.develex.baseapp.MainViewModel
@@ -37,9 +39,9 @@ fun HomeScreen(navController: NavController, vm: MainViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(15.dp),
+                .padding(top = 20.dp, start = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             Text(
                 text = "Home",
@@ -65,4 +67,10 @@ fun HomeScreen(navController: NavController, vm: MainViewModel) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SimpleHomeScreenPreview() {
+    HomeScreen(navController = rememberNavController(), vm = MainViewModel())
 }
