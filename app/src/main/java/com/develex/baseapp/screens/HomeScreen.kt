@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,28 +29,40 @@ import com.example.compose.AppTheme
 
 @Composable
 fun HomeScreen(navController: NavController, vm: MainViewModel) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
 //                Content page starts here
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(15.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ){
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
-                            .height(200.dp)
-                            .padding(horizontal = 15.dp, vertical = 10.dp)
-                            .clip(MaterialTheme.shapes.large)
-                    ) {
-                        Text(
-                            "Home Screen",
-                            style = MaterialTheme.typography.titleLarge,
-                            modifier = Modifier.padding(vertical = 20.dp)
-                        )
-                    }
-                }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Home",
+                style = MaterialTheme.typography.headlineLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(top = 20.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(horizontal = 15.dp, vertical = 10.dp)
+                    .clip(MaterialTheme.shapes.large)
+            ) {
+                Text(
+                    "Home Screen",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(vertical = 20.dp)
+                )
             }
         }
+    }
+}
