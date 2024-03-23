@@ -49,7 +49,7 @@ fun CustomDatePickerDialog(
 }
 
 @Composable
-fun CustomDatePicker() {
+fun CustomDatePicker(modifier: Modifier) {
     val date = remember { mutableStateOf(LocalDate.now()) }
     val isOpen = remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -63,7 +63,8 @@ fun CustomDatePicker() {
                 .clickable(
                     onClick = {
                         isOpen.value = true
-                    }),
+                    })
+                .then(modifier),
             enabled = false,
             colors = TextFieldDefaults.colors(
                 disabledTextColor = MaterialTheme.colorScheme.onBackground

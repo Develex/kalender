@@ -2,15 +2,31 @@
 
 package com.develex.baseapp.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.twotone.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -80,8 +96,102 @@ fun AppointmentsScreen(navController: NavController, vm: MainViewModel, avm: App
                     text = "Afspraak Datum",
                     style = MaterialTheme.typography.bodyLarge
                 )
-                CustomDatePicker()
+                CustomDatePicker(modifier = Modifier)
+                Text(
+                    text = "Afspraak Tijd",
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 CustomTimePicker()
+            }
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 8.dp),
+                thickness = 2.dp
+            )
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = "Alarm 1",
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                    ) {
+                        Text(
+                            text = "Datum",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        CustomDatePicker(modifier = Modifier)
+                        Text(
+                            text = "Tijd",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        CustomTimePicker()
+                    }
+                    FilledIconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(160.dp)
+                            .padding(start = 5.dp, top = 20.dp),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Icon(
+                            Icons.TwoTone.Delete,
+                            contentDescription = "Verwijderen",
+                        )
+                    }
+                }
+            }
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 8.dp),
+                thickness = 2.dp
+            )
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = "Alarm 2",
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(0.8f)
+                    ) {
+                        Text(
+                            text = "Datum",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        CustomDatePicker(modifier = Modifier)
+                        Text(
+                            text = "Tijd",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        CustomTimePicker()
+                    }
+                    FilledIconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(160.dp)
+                            .padding(start = 5.dp, top = 20.dp),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Icon(
+                            Icons.TwoTone.Delete,
+                            contentDescription = "Verwijderen",
+                        )
+                    }
+                }
             }
         }
     }
