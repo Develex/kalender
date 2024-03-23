@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.develex.baseapp.MainViewModel
+import com.develex.baseapp.screens.AppointmentViewModel
 import com.develex.baseapp.screens.HomeScreen
 import com.develex.baseapp.screens.AppointmentsScreen
 import com.develex.baseapp.screens.SettingsScreen
@@ -26,7 +27,7 @@ import com.develex.baseapp.screens.SettingsScreen
 // important to pass the instance of the ViewModel to the next composable. otherwise it creates a new instance. :(
 @SuppressLint("AutoboxingStateCreation")
 @Composable
-fun BottomNavigationBar(vm: MainViewModel) {
+fun BottomNavigationBar(vm: MainViewModel, avm: AppointmentViewModel) {
     var navigationSelectedItem by remember {
         mutableStateOf(1)
     }
@@ -72,13 +73,13 @@ fun BottomNavigationBar(vm: MainViewModel) {
             modifier = Modifier.padding(paddingValues = paddingValues)
         ) {
             composable(Screens.Appointments.route) {
-                AppointmentsScreen(navController, vm)
+                AppointmentsScreen(navController, vm, avm)
             }
             composable(Screens.Home.route) {
-                HomeScreen(navController, vm)
+                HomeScreen(navController, vm, avm)
             }
             composable(Screens.Settings.route) {
-                SettingsScreen(navController, vm)
+                SettingsScreen(navController, vm, avm)
             }
         }
     }

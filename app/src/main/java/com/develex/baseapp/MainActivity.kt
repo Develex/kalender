@@ -26,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.develex.baseapp.navigation.BottomNavigationBar
 import com.develex.baseapp.predatastore.DataStoreManager
+import com.develex.baseapp.screens.AppointmentViewModel
 import com.example.compose.AppTheme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectIndexed
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val vm: MainViewModel = viewModel()
+            val avm: AppointmentViewModel = viewModel()
 
             val dataStoreManager: DataStoreManager = DataStoreManager(this)
             LaunchedEffect(true) {
@@ -70,7 +72,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        BottomNavigationBar(vm)
+                        BottomNavigationBar(vm, avm)
                     }
                 }
             }

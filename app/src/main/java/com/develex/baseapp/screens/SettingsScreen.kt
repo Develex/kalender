@@ -36,7 +36,7 @@ import com.develex.baseapp.predatastore.Settings
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(navController: NavController, vm: MainViewModel) {
+fun SettingsScreen(navController: NavController, vm: MainViewModel, avm: AppointmentViewModel) {
 
     val dataStoreManager: DataStoreManager = DataStoreManager(LocalContext.current)
     val coroutineScope = rememberCoroutineScope()
@@ -53,19 +53,20 @@ fun SettingsScreen(navController: NavController, vm: MainViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 20.dp, start = 20.dp),
+                .padding(20.dp),
             verticalArrangement = Arrangement.Top
         ) {
-                Text(
-                    text = "Instellingen",
-                    style = typography.headlineLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(top=20.dp)
-                )
+            Text(
+                text = "Instellingen",
+                style = typography.headlineLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .padding(top = 20.dp)
+            )
             SettingsSwitch(
+                modifier = Modifier.height(80.dp),
                 icon = {
                     if (themeAutoUserSetting.value) {
                         Icon(
@@ -95,6 +96,7 @@ fun SettingsScreen(navController: NavController, vm: MainViewModel) {
                 state = autoModeState,
             )
             SettingsSwitch(
+                modifier = Modifier.height(80.dp),
                 icon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.dark_mode_24px),
@@ -118,8 +120,8 @@ fun SettingsScreen(navController: NavController, vm: MainViewModel) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SimpleSettingsScreenPreview() {
-    SettingsScreen(navController = rememberNavController(), vm = MainViewModel())
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun SimpleSettingsScreenPreview() {
+//    SettingsScreen(navController = rememberNavController(), vm = MainViewModel())
+//}
