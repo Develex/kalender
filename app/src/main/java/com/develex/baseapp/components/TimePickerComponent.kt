@@ -43,6 +43,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -197,14 +198,14 @@ fun PickerDialog(
 @Composable
 fun CustomTimePicker(
     label: String? = "",
-    timepickerState: MutableState<LocalTime> = remember { mutableStateOf(LocalTime.now()) },
+    timepickerState: MutableState<LocalTime> = rememberSaveable { mutableStateOf(LocalTime.now()) },
     enabled: MutableState<Boolean> = remember {
         mutableStateOf(true)
     }
 ) {
     val isOpen = remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Log.d("TimepickerState", timepickerState.value.toString())
+
         TextField(
             readOnly = true,
             value = timepickerState.value.format(DateTimeFormatter.ofPattern("HH:mm")),

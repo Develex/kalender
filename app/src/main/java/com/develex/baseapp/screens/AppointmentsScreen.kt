@@ -55,6 +55,7 @@ import com.develex.baseapp.MainViewModel
 import com.develex.baseapp.R
 import com.develex.baseapp.components.CustomDatePicker
 import com.develex.baseapp.components.CustomTimePicker
+import com.develex.baseapp.components.convertMillisToDate
 import com.develex.baseapp.data.Appointment
 import com.develex.baseapp.navigation.Screens
 import kotlinx.coroutines.flow.emptyFlow
@@ -65,6 +66,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,29 +84,10 @@ fun AppointmentsScreen(
 //    CoroutineScope
     val scope = rememberCoroutineScope()
 
-    val appointmentUpdated = remember {
-        mutableStateOf(false)
-    }
-
 //    get appointmentId from viewmodel and keep as state
     val vmAppointmentId by vm.currentAppointment.collectAsState(initial = 0)
 
-////    get appointment with appointmentId
-    val appointment: State<Appointment> =
-        appointmentViewModel.getAppointment(vmAppointmentId)
-            .collectAsState(
-                initial = Appointment(
-                    name = "",
-                    dateTime = System.currentTimeMillis(),
-                    alarm1DateTime = System.currentTimeMillis(),
-                    alarm2DateTime = System.currentTimeMillis(),
-                    alarm2Toggle = false,
-                    alarm1Toggle = false
-                )
-            )
-//    appointmentUpdated.value = !appointmentUpdated.value
-
-    val appointmentId = appointmentViewModel.appointmentId.collectAsState()
+    var appointmentId = appointmentViewModel.appointmentId.collectAsState()
     val appointmentName = appointmentViewModel.appointmentName.collectAsState()
     val appointmentDateTime = appointmentViewModel.appointmentDateTime.collectAsState()
     val appointmentAlarm1DateTime = appointmentViewModel.appointmentAlarm1DateTime.collectAsState()
@@ -112,14 +95,30 @@ fun AppointmentsScreen(
     val appointmentAlarm1Toggle = appointmentViewModel.appointmentAlarm1Toggle.collectAsState()
     val appointmentAlarm2Toggle = appointmentViewModel.appointmentAlarm2Toggle.collectAsState()
 
-    if (appointment.value != null) {
-        appointmentViewModel.setId(vmAppointmentId)
-        appointmentViewModel.setName(appointment.value.name)
-        appointmentViewModel.setDateTime(appointment.value.dateTime)
-        appointmentViewModel.setAlarm1DateTime(appointment.value.alarm1DateTime)
-        appointmentViewModel.setAlarm2DateTime(appointment.value.alarm2DateTime)
-        appointmentViewModel.setAlarm1Toggle(appointment.value.alarm1Toggle)
-        appointmentViewModel.setAlarm2Toggle(appointment.value.alarm2Toggle)
+    Log.d(TAG, vmAppointmentId.toString())
+    LaunchedEffect(Unit) {
+        vm.currentAppointment.collect { id ->
+            Log.d(TAG, id.toString())
+            if (id != 0) {
+                appointmentViewModel.getAppointment(id).collect { data ->
+                    appointmentViewModel.setId(id)
+                    appointmentViewModel.setName(data.name)
+                    appointmentViewModel.setDateTime(data.dateTime)
+                    appointmentViewModel.setAlarm1DateTime(data.alarm1DateTime)
+                    appointmentViewModel.setAlarm2DateTime(data.alarm2DateTime)
+                    appointmentViewModel.setAlarm1Toggle(data.alarm1Toggle)
+                    appointmentViewModel.setAlarm2Toggle(data.alarm2Toggle)
+                }
+            } else {
+                appointmentViewModel.setId(id)
+                appointmentViewModel.setName("")
+                appointmentViewModel.setDateTime(System.currentTimeMillis())
+                appointmentViewModel.setAlarm1DateTime(System.currentTimeMillis())
+                appointmentViewModel.setAlarm2DateTime(System.currentTimeMillis())
+                appointmentViewModel.setAlarm1Toggle(false)
+                appointmentViewModel.setAlarm2Toggle(false)
+            }
+        }
     }
 
 //    Appointment Date & Time
@@ -127,7 +126,7 @@ fun AppointmentsScreen(
         initialSelectedDateMillis = appointmentDateTime.value * 1000
     )
     val timepickerState: MutableState<LocalTime> =
-        rememberSaveable {
+        rememberSaveable() {
             mutableStateOf(
                 Instant.ofEpochMilli(appointmentDateTime.value * 1000)
                     .atZone(ZoneId.systemDefault())
@@ -200,27 +199,27 @@ fun AppointmentsScreen(
                         )
                         Text(text = "Annuleren")
                     }
-                    if (appointmentName.value != "") {
-                        ExtendedFloatingActionButton(
-                            onClick = {
-                                vm.setCurrentAppointment(0)
-                                appointmentViewModel.deleteAppointment(appointment.value)
-                                navController.navigate(Screens.Home.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                        ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.delete_24px),
-                                contentDescription = "Verwijderen"
-                            )
-                            Text(text = "Verwijderen")
-                        }
-                    }
+//                    if (appointmentName.value != "") {
+//                        ExtendedFloatingActionButton(
+//                            onClick = {
+//                                vm.setCurrentAppointment(0)
+//                                appointmentViewModel.deleteAppointment(appointment.value)
+//                                navController.navigate(Screens.Home.route) {
+//                                    popUpTo(navController.graph.findStartDestination().id) {
+//                                        saveState = true
+//                                    }
+//                                    launchSingleTop = true
+//                                    restoreState = true
+//                                }
+//                            },
+//                        ) {
+//                            Icon(
+//                                imageVector = ImageVector.vectorResource(R.drawable.delete_24px),
+//                                contentDescription = "Verwijderen"
+//                            )
+//                            Text(text = "Verwijderen")
+//                        }
+//                    }
                     ExtendedFloatingActionButton(
                         onClick = {
                             appointmentViewModel.setDateTime(
@@ -305,7 +304,11 @@ fun AppointmentsScreen(
                         CustomDatePicker(
                             modifier = Modifier,
                             label = "Afspraak Datum",
-                            datePickerState
+                            datePickerState,
+                            startDate = LocalDate.parse(
+                                appointmentDateTime.value.convertMillisToDate(),
+                                DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                            )
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         CustomTimePicker(label = "Afspraak Tijd", timepickerState)
@@ -333,7 +336,11 @@ fun AppointmentsScreen(
                                     modifier = Modifier,
                                     label = "Datum",
                                     alarm1DatePickerState,
-                                    enabled = alarm1Checked
+                                    enabled = alarm1Checked,
+                                    startDate = LocalDate.parse(
+                                        appointmentAlarm1DateTime.value.convertMillisToDate(),
+                                        DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                                    )
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 CustomTimePicker(
@@ -381,7 +388,11 @@ fun AppointmentsScreen(
                                     modifier = Modifier,
                                     label = "Datum",
                                     alarm2DatePickerState,
-                                    enabled = alarm2Checked
+                                    enabled = alarm2Checked,
+                                    startDate = LocalDate.parse(
+                                        appointmentAlarm2DateTime.value.convertMillisToDate(),
+                                        DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                                    )
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 CustomTimePicker(

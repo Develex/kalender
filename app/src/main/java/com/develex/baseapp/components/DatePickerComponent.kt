@@ -23,10 +23,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,16 +63,21 @@ fun CustomDatePicker(
     datePickerState: DatePickerState = rememberDatePickerState(),
     enabled: MutableState<Boolean> = remember {
         mutableStateOf(true)
-    }
+    },
+    startDate: LocalDate = LocalDate.now()
 ) {
-    val date = remember { mutableStateOf(LocalDate.now()) }
+    val date = remember { mutableStateOf(startDate) }
     val isOpen = remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Log.d("CustomDatePicker", date.value.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
-        Log.d("CustomDatePicker", date.value.toString())
+//        Log.d("CustomDatePicker", date.value.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+//        Log.d("CustomDatePicker", date.value.toString())
+        Log.d(
+            "CustomDatePicker1",
+            datePickerState.selectedDateMillis!!.convertMillisToDate()
+        )
         TextField(
             readOnly = true,
-            value = date.value.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+            value = date.value.format(DateTimeFormatter.ofPattern("dd-MM-yyy")),
             onValueChange = {},
             label = {
                 if (label != null) {
@@ -118,4 +127,18 @@ fun CustomDatePicker(
             }
         )
     }
+}
+
+fun Long.convertMillisToDate(): String {
+    // Create a calendar instance in the default time zone
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = this@convertMillisToDate
+        // Adjust for the time zone offset to get the correct local date
+        val zoneOffset = get(Calendar.ZONE_OFFSET)
+        val dstOffset = get(Calendar.DST_OFFSET)
+        add(Calendar.MILLISECOND, -(zoneOffset + dstOffset))
+    }
+    // Format the calendar time in the specified format
+    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    return sdf.format(calendar.time)
 }

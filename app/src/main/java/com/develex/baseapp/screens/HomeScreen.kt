@@ -186,21 +186,21 @@ fun HomeScreen(
                                     .atZone(ZoneId.of("UTC"))
                                     .format(DateTimeFormatter.ofPattern("HH:mm")),
                                 alarm1date =
-                                Instant.ofEpochMilli(appointment.dateTime)
+                                Instant.ofEpochMilli(appointment.alarm1DateTime)
                                     .atZone(ZoneId.of("UTC"))
                                     .toLocalDate()
                                     .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                                 alarm1time =
-                                Instant.ofEpochMilli(appointment.dateTime)
+                                Instant.ofEpochMilli(appointment.alarm1DateTime)
                                     .atZone(ZoneId.of("UTC"))
                                     .format(DateTimeFormatter.ofPattern("HH:mm")),
                                 alarm2date =
-                                Instant.ofEpochMilli(appointment.dateTime)
+                                Instant.ofEpochMilli(appointment.alarm2DateTime)
                                     .atZone(ZoneId.of("UTC"))
                                     .toLocalDate()
                                     .format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                                 alarm2time =
-                                Instant.ofEpochMilli(appointment.dateTime)
+                                Instant.ofEpochMilli(appointment.alarm2DateTime)
                                     .atZone(ZoneId.of("UTC"))
                                     .format(DateTimeFormatter.ofPattern("HH:mm")),
                                 navController = navController,
