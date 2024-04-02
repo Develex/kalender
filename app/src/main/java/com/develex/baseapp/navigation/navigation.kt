@@ -24,11 +24,11 @@ data class BottomNavigationItem(
     @Composable
     fun bottomNavigationItems(): List<BottomNavigationItem> {
         return listOf(
-            BottomNavigationItem(
-                label = "Afspraken",
-                icon = Icons.Filled.List,
-                route = Screens.Appointments.route
-            ),
+//            BottomNavigationItem(
+//                label = "Afspraken",
+//                icon = Icons.Filled.List,
+//                route = Screens.Appointments.route
+//            ),
             BottomNavigationItem(
                 label = "Kalender",
                 icon = ImageVector.vectorResource(id = R.drawable.calendar_month_24px),

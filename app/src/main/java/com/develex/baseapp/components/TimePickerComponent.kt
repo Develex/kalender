@@ -39,6 +39,7 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -80,8 +81,6 @@ fun TimePickerDialog(
         onConfirm(cal)
     }
 
-    // TimePicker does not provide a default TimePickerDialog, so we use our own PickerDialog:
-    // https://issuetracker.google.com/issues/288311426
     PickerDialog(
         modifier = modifier,
         onDismissRequest = onCancel,
@@ -196,24 +195,43 @@ fun PickerDialog(
 }
 
 @Composable
-fun CustomTimePicker() {
-    val time = remember { mutableStateOf(LocalTime.now()) }
+fun CustomTimePicker(
+    label: String? = "",
+    timepickerState: MutableState<LocalTime> = remember { mutableStateOf(LocalTime.now()) },
+    enabled: MutableState<Boolean> = remember {
+        mutableStateOf(true)
+    }
+) {
     val isOpen = remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-
+        Log.d("TimepickerState", timepickerState.value.toString())
         TextField(
             readOnly = true,
-            value = time.value.format(DateTimeFormatter.ofPattern("HH:mm")),
+            value = timepickerState.value.format(DateTimeFormatter.ofPattern("HH:mm")),
             onValueChange = {},
+            label = {
+                if (label != null) {
+                    Text(text = label)
+                } else {
+                    Text(text = "")
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(
                     onClick = {
-                        isOpen.value = true
+                        if (enabled.value) {
+                            isOpen.value = true
+                        }
                     }),
             enabled = false,
             colors = TextFieldDefaults.colors(
-                disabledTextColor = MaterialTheme.colorScheme.onBackground
+                disabledTextColor =
+                if (enabled.value) {
+                    MaterialTheme.colorScheme.onBackground
+                } else {
+                    TextFieldDefaults.colors().disabledTextColor
+                }
             )
         )
     }
@@ -225,7 +243,7 @@ fun CustomTimePicker() {
                 isOpen.value = false
 //                Set the date
                 if (it != null) {
-                    time.value = it.toInstant()
+                    timepickerState.value = it.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalTime()
                 }

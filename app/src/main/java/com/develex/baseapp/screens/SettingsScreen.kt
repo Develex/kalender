@@ -36,7 +36,7 @@ import com.develex.baseapp.predatastore.Settings
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(navController: NavController, vm: MainViewModel, avm: AppointmentViewModel) {
+fun SettingsScreen(navController: NavController, vm: MainViewModel) {
 
     val dataStoreManager: DataStoreManager = DataStoreManager(LocalContext.current)
     val coroutineScope = rememberCoroutineScope()

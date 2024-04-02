@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp").version("1.8.0-1.0.8")
+    id("kotlin-kapt")
 }
 
 android {
@@ -50,26 +52,44 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.6.1"
+    val material3Version = "1.2.1"
+    val composeSettingsVersion = "1.0.3"
+    val calendarVersion = "2.5.0"
+    val lifecycleVersion = "2.7.0"
+    val datastoreVersion = "1.0.0"
 
+//    Kotlin
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+//    Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+//    Datastore
+    implementation("androidx.datastore:datastore-preferences:$datastoreVersion")
+//    Material 3
+    implementation("androidx.compose.material3:material3:$material3Version")
+//    Compose
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.02.02"))
-    implementation("androidx.compose.ui:ui")
-    implementation("com.kizitonwose.calendar:compose:2.5.0")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("com.github.alorma:compose-settings-storage-preferences:1.0.3")
-    implementation("com.github.alorma:compose-settings-ui-m3:1.0.3")
+    implementation("androidx.compose.ui:ui")
+    implementation(platform("androidx.compose:compose-bom:2024.03.00"))
+//    Compose-Settings
+    implementation("com.github.alorma:compose-settings-storage-preferences:$composeSettingsVersion")
+    implementation("com.github.alorma:compose-settings-ui-m3:$composeSettingsVersion")
+//    Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+//    Calendar
+    implementation("com.kizitonwose.calendar:compose:$calendarVersion")
+//    Test & Debug
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.02"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

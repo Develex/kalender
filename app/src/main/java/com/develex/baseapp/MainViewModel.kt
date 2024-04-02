@@ -7,7 +7,16 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MainViewModel() : ViewModel() {
 
+    //    Keeping Track on current appointment for AppointmentScreen
+//    currently navigation arguments in jetpack compose are broken.
+    fun setCurrentAppointment(value: Int) {
+        _currentAppointment.value = value
+    }
 
+    private var _currentAppointment = MutableStateFlow(0)
+    val currentAppointment: StateFlow<Int> = _currentAppointment
+
+    // Settings
     fun setThemeUserSetting(value: Boolean) {
         _themeUserSetting.value = value
     }
