@@ -111,7 +111,6 @@ fun AppointmentsScreen(
     val appointmentAlarm2DateTime = appointmentViewModel.appointmentAlarm2DateTime.collectAsState()
     val appointmentAlarm1Toggle = appointmentViewModel.appointmentAlarm1Toggle.collectAsState()
     val appointmentAlarm2Toggle = appointmentViewModel.appointmentAlarm2Toggle.collectAsState()
-    Log.d(TAG, "appointmentDateTime: ${appointmentDateTime.value}")
 
     if (appointment.value != null) {
         appointmentViewModel.setId(vmAppointmentId)
@@ -121,7 +120,6 @@ fun AppointmentsScreen(
         appointmentViewModel.setAlarm2DateTime(appointment.value.alarm2DateTime)
         appointmentViewModel.setAlarm1Toggle(appointment.value.alarm1Toggle)
         appointmentViewModel.setAlarm2Toggle(appointment.value.alarm2Toggle)
-        Log.d(TAG, "appointment.value.dateTime: ${appointment.value.dateTime}")
     }
 
 //    Appointment Date & Time
@@ -136,13 +134,6 @@ fun AppointmentsScreen(
                     .toLocalTime()
             )
         }
-    Log.d(
-        TAG, "AppointmentsScreen: ${
-            Instant.ofEpochMilli(appointmentDateTime.value)
-                .atZone(ZoneId.systemDefault())
-                .toLocalTime()
-        }"
-    )
 
 
 //    Alarm 1 Date & Time
@@ -213,6 +204,7 @@ fun AppointmentsScreen(
                         ExtendedFloatingActionButton(
                             onClick = {
                                 vm.setCurrentAppointment(0)
+                                appointmentViewModel.deleteAppointment(appointment.value)
                                 navController.navigate(Screens.Home.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
