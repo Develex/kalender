@@ -117,6 +117,7 @@ fun HomeScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
+                        vm.setCurrentAppointment(0)
                         navController.navigate(Screens.Appointments.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
@@ -173,6 +174,7 @@ fun HomeScreen(
                             Instant.ofEpochMilli(it.dateTime).atZone(ZoneId.of("UTC"))
                                 .toLocalDate() == currentSelectedDay.value
                         }) { appointment ->
+                            Log.d("Test", appointment.id.toString())
                             AppointmentCard(
                                 id = appointment.id,
                                 title = appointment.name,
